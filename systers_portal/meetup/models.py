@@ -1,6 +1,4 @@
-from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils import timezone
 from cities_light.models import City
 from ckeditor.fields import RichTextField
 
@@ -21,6 +19,7 @@ class MeetupLocation(models.Model):
     members = models.ManyToManyField(SystersUser, blank=True,
                                      related_name="Members",
                                      verbose_name="Members")
+    sponsors = RichTextField(verbose_name="Sponsors", blank=True)
 
     def __str__(self):
         return self.name
@@ -32,7 +31,7 @@ class Meetup(models.Model):
     slug = models.SlugField(max_length=50, unique=True, verbose_name="Slug")
     date = models.DateField(verbose_name="Date")
     time = models.TimeField(verbose_name="Time", blank=True)
-    venue = models.TextField(verbose_name="Venue", blank=True)
+    venue = models.CharField(max_length=512, verbose_name="Venue", blank=True)
     description = RichTextField(verbose_name="Description")
     meetup_location = models.ForeignKey(MeetupLocation, verbose_name="Meetup Location")
     created_by = models.ForeignKey(SystersUser, null=True, verbose_name="Created By")
@@ -40,11 +39,6 @@ class Meetup(models.Model):
 
     def __str__(self):
         return self.title
-
-    def clean_fields(self, *args, **kwargs):
-        """Validate meetup date is not less than today's date"""
-        if self.date < timezone.now().date():
-            raise ValidationError("Date should not be less than today's date.")
 
 
 class Rsvp(models.Model):

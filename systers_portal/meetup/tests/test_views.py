@@ -16,7 +16,7 @@ class MeetupLocationViewBaseTestCase(object):
         self.location = City.objects.create(name='Baz', display_name='Baz', country=country)
         self.meetup_location = MeetupLocation.objects.create(
             name="Foo Systers", slug="foo", location=self.location,
-            description="It's a test meetup location")
+            description="It's a test meetup location", sponsors="BarBaz")
 
         self.meetup = Meetup.objects.create(title='Foo Bar Baz', slug='foo-bar-baz',
                                             date=timezone.now().date(),
@@ -232,8 +232,17 @@ class UpcomingMeetupsViewTestCase(MeetupLocationViewBaseTestCase, TestCase):
 class PastMeetupListViewTestCase(MeetupLocationViewBaseTestCase, TestCase):
     def setUp(self):
         super(PastMeetupListViewTestCase, self).setUp()
+        # a future meetup. This should not show up under 'past meetups'.
         self.meetup2 = Meetup.objects.create(title='Bar Baz', slug='bazbar',
                                              date=(timezone.now() + timezone.timedelta(2)).date(),
+                                             time=timezone.now().time(),
+                                             description='This is new test Meetup',
+                                             meetup_location=self.meetup_location,
+                                             created_by=self.systers_user,
+                                             last_updated=timezone.now())
+        # a past meetup. This should show up under 'past meetups'.
+        self.meetup3 = Meetup.objects.create(title='Foo Baz', slug='foobar',
+                                             date=(timezone.now() - timezone.timedelta(2)).date(),
                                              time=timezone.now().time(),
                                              description='This is new test Meetup',
                                              meetup_location=self.meetup_location,
@@ -248,3 +257,17 @@ class PastMeetupListViewTestCase(MeetupLocationViewBaseTestCase, TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "meetup/past_meetups.html")
         self.assertEqual(len(response.context['meetup_list']), 1)
+
+
+class MeetupLocationSponsorsViewTestCase(MeetupLocationViewBaseTestCase, TestCase):
+    def test_view_meetup_location_sponsors_view(self):
+        """Test Meetup Location sponsors view for correct http response"""
+        url = reverse('sponsors_meetup_location', kwargs={'slug': 'foo'})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "meetup/sponsors.html")
+        self.assertEqual(response.context['meetup_location'], self.meetup_location)
+
+        nonexistent_url = reverse('sponsors_meetup_location', kwargs={'slug': 'bar'})
+        response = self.client.get(nonexistent_url)
+        self.assertEqual(response.status_code, 404)

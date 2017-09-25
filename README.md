@@ -1,4 +1,4 @@
-Systers Portal [![Build Status](https://travis-ci.org/systers/portal.svg?branch=master)](https://travis-ci.org/systers/portal) [![Coverage Status](https://coveralls.io/repos/systers/portal/badge.png?branch=master)](https://coveralls.io/r/systers/portal?branch=master) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/systers/portal?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Systers Portal [![Build Status](https://travis-ci.org/systers/portal.svg?branch=master)](https://travis-ci.org/systers/portal) [![Coverage Status](https://coveralls.io/repos/systers/portal/badge.png?branch=master)](https://coveralls.io/r/systers/portal?branch=master)
 ==============
 
 Systers Portal is for Systers communities to post and share information within
@@ -14,13 +14,17 @@ Setup for developers
 
 1. Make sure you have installed Python 3.4 (preferably latest minor release),
    [pip](https://pip.pypa.io/en/latest/) and [virtualenv](http://www.virtualenv.org/en/latest/).
+1. If working behind a proxy, make sure your environment variables are properly set up. If 
+   you still get an error due to proxy, use "-E" flag along with "sudo" to export all the 
+   environment variables.
+1. Make sure you have python3-dev installed on your operating system. For Debian, you would additionally require libpq-dev.
+   Install by using `sudo apt-get install libpq-dev python3-dev`
 1. Make sure you have PostgreSQL installed. For a tutorial on installing
    Postgres, [Django Girls'](http://djangogirls.org) ebook,
    [Tutorials Extension](http://djangogirls.org/resources/), is a reference.
    The info is also on [Django Girls GitHub repository](https://github.com/DjangoGirls/tutorial-extensions/blob/master/optional_postgresql_installation/README.md).
-1. Make sure you have python3-dev installed - `sudo pip install python3-dev`
 1. Clone the repo - `git clone git@github.com:systers/portal.git` and cd into
-  the `portal` directory.
+  the `portal` directory. If working behind a proxy, follow the instructions [here](https://cms-sw.github.io/tutorial-proxy.html).
 1. Create a virtual environment with Python 3 and install dependencies:
 
  ```bash

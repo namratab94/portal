@@ -18,7 +18,7 @@ class MeetupFormTestCaseBase:
         self.location = City.objects.create(name='Baz', display_name='Baz', country=country)
         self.meetup_location = MeetupLocation.objects.create(
             name="Foo Systers", slug="foo", location=self.location,
-            description="It's a test meetup location")
+            description="It's a test meetup location", sponsors="BarBaz")
 
         self.meetup = Meetup.objects.create(title='Foo Bar Baz', slug='foobarbaz',
                                             date=timezone.now().date(),
@@ -49,6 +49,29 @@ class AddMeetupFormTestCase(MeetupFormTestCaseBase, TestCase):
         self.assertTrue(new_meetup.title, 'Foo')
         self.assertTrue(new_meetup.created_by, self.systers_user)
         self.assertTrue(new_meetup.meetup_location, self.meetup_location)
+
+    def test_add_meetup_form_with_past_date(self):
+        """Test add Meetup form with a date that has passed."""
+        date = (timezone.now() - timedelta(2)).date()
+        time = timezone.now().time()
+        data = {'title': 'Foo', 'slug': 'foo', 'date': date, 'time': time,
+                'description': "It's a test meetup."}
+        form = AddMeetupForm(data=data, created_by=self.systers_user,
+                             meetup_location=self.meetup_location)
+        self.assertFalse(form.is_valid())
+        self.assertTrue(form.errors['date'], ["Date should not be before today's date."])
+
+    def test_add_meetup_form_with_passed_time(self):
+        """Test add Meetup form with a time that has passed."""
+        date = timezone.now().date()
+        time = (timezone.now() - timedelta(2)).time()
+        data = {'title': 'Foo', 'slug': 'foo', 'date': date, 'time': time,
+                'description': "It's a test meetup."}
+        form = AddMeetupForm(data=data, created_by=self.systers_user,
+                             meetup_location=self.meetup_location)
+        self.assertFalse(form.is_valid())
+        self.assertTrue(form.errors['time'],
+                        ["Time should not be a time that has already passed."])
 
 
 class EditMeetupFormTestCase(MeetupFormTestCaseBase, TestCase):
