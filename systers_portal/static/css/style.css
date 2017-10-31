@@ -4,6 +4,10 @@
   margin-top: 40px;
 }
 
+.mt20 {
+  margin-top: 20px;
+}
+
 .mb40 {
   margin-bottom: 40px;
 }
@@ -14,6 +18,10 @@
 
 .mr4 {
   margin-right: 4px;
+}
+
+.ml15 {
+  margin-left: 15px;
 }
 
 /* Sticky footer styles
@@ -137,7 +145,7 @@ body > .container {
 
 /* Common: about us
 -------------------------------------------------- */
-.contact-text, 
+.contact-text,
 .about-us-text {
   font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 1.2em;
@@ -149,12 +157,80 @@ body > .container {
   margin: 0 5px;
 }
 
-.contact-social a {
-  color: #888888;
+/* Common: new community proposal form
+---------------------------------------------------*/
+#google-embed-form{
+  overflow: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  border: 0;
 }
 
-.contact-social a:hover {
-  color: #444444;
+/* social icons contact page
+---------------------------------------------------*/
+.facebook_icon {
+  color: #3b5998;
+}
+
+.twitter_icon {
+ color: #55acee;
+}
+
+.github_icon {
+  color: #333333;
+}
+
+.linkedin_icon {
+  color: #0077b5;
+}
+
+/* log-in page social buttons
+----------------------------*/
+
+.facebook_button,
+.facebook_button:hover,
+.twitter_button,
+.twitter_button:hover,
+.github_button,
+.github_button:hover,
+.google_button,
+.google_button:hover {
+  max-width: 350px;
+  padding: 15px;
+  margin: 0 auto;
+  display: block;
+}
+
+.facebook_button,
+.facebook_button:hover {
+  background-color: #3b5998;
+  color: #3b5998;
+}
+
+.twitter_button,
+.twitter_button:hover {
+  background-color:  #55acee;
+  color: #55acee;
+}
+
+.github_button,
+.github_button:hover {
+  background-color: #333333;
+  color: #333333;
+}
+
+.google_button,
+.google_button:hover {
+  background-color: #dc4e41;
+  color: #dc4e41;
+}
+
+.social_button_text,
+.social_button_text:hover {
+  color: #ffffff;
 }
 
 /* Sign in, Sign up
@@ -170,18 +246,31 @@ body > .container {
   margin: 0 auto;
 }
 
-.social-buttons {
-  padding-top: 0;
-}
-
-.social-buttons a {
-  margin-bottom: 10px;
+.share-buttons {
+  margin: 20px 0;
 }
 
 .or-delimiter {
   text-align: center;
   margin: 10px 0;
 }
+
+/* Email
+-------------------------------------------------- */
+.email-heading {
+  max-width: 350px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+#email-subheading {
+  font-size: 1.2em;
+}
+
+span {
+  font-size: 1em;
+}
+
 
 /* User Profile
 -------------------------------------------------- */
@@ -228,7 +317,8 @@ table.decoration-none  tr a {
   font-size: 2em;
 }
 
-.blog-entry .body {
+.blog-entry .body,
+.box-body {
   font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 1.2em;
   line-height: 1.8em;
@@ -236,6 +326,39 @@ table.decoration-none  tr a {
 
 .blog-entry .tags {
   font-size: 1.3em;
+}
+
+/* Meetup CSS
+------------------------------------------------- */
+.box-container {
+  margin: 25px 0px;
+  padding: 0px 25px;
+  border: 1px solid #eee;
+}
+
+.box-body {
+  margin: 30px 0px;
+}
+
+.pt25 {
+  padding-top: 25px;
+}
+
+.map-container {
+  height:400px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.meetup-details span {
+  margin-right: 15px;
+}
+
+/* Meetup Location Members user-cell space
+-------------------------------------------------- */
+.user-cell-wh-100 {
+  width: 100px;
+  height: 100px;
 }
 
 /* RESPONSIVE CSS

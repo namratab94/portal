@@ -16,7 +16,7 @@ class Community(models.Model):
     email = models.EmailField(max_length=255, blank=True, verbose_name="Email")
     mailing_list = models.EmailField(max_length=255, blank=True,
                                      verbose_name="Mailing list")
-    members = models.ManyToManyField(SystersUser, blank=True, null=True,
+    members = models.ManyToManyField(SystersUser, blank=True,
                                      related_name='communities',
                                      verbose_name="Members")
     admin = models.ForeignKey(SystersUser, related_name='community',
@@ -134,8 +134,11 @@ class Community(models.Model):
 
 class CommunityPage(Post):
     """Model to represent an arbitrary community page"""
-    order = models.IntegerField(unique=True, verbose_name="Order")
+    order = models.IntegerField(verbose_name="Order")
     community = models.ForeignKey(Community, verbose_name="Community")
+
+    class Meta:
+        unique_together = (('community', 'slug'), ('community', 'order'))
 
     def __str__(self):
         return "Page {0} of {1}".format(self.title, self.community)

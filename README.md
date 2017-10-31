@@ -1,4 +1,4 @@
-Systers Portal [![Build Status](https://travis-ci.org/systers/portal.svg?branch=master)](https://travis-ci.org/systers/portal) [![Coverage Status](https://coveralls.io/repos/systers/portal/badge.png?branch=master)](https://coveralls.io/r/systers/portal?branch=master) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/systers/portal?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Systers Portal [![Build Status](https://travis-ci.org/systers/portal.svg?branch=master)](https://travis-ci.org/systers/portal) [![Coverage Status](https://coveralls.io/repos/systers/portal/badge.png?branch=master)](https://coveralls.io/r/systers/portal?branch=master)
 ==============
 
 Systers Portal is for Systers communities to post and share information within
@@ -9,14 +9,24 @@ Website: http://portal.systers.org
 Project page: http://systers.github.io/portal/
 
 
+If you are an Outreachy Applicant, start with reading [this](https://github.com/systers/ossprojects/wiki/Systers-Portal) for meetup features, please go through [this](https://github.com/systers/ossprojects/wiki/Meetup-Features).
+
 Setup for developers
 --------------------
 
 1. Make sure you have installed Python 3.4 (preferably latest minor release),
    [pip](https://pip.pypa.io/en/latest/) and [virtualenv](http://www.virtualenv.org/en/latest/).
-1. Make sure you have PostgreSQL installed.
+1. If working behind a proxy, make sure your environment variables are properly set up. If 
+   you still get an error due to proxy, use "-E" flag along with "sudo" to export all the 
+   environment variables.
+1. Make sure you have python3-dev installed on your operating system. For Debian, you would additionally require libpq-dev.
+   Install by using `sudo apt-get install libpq-dev python3-dev`
+1. Make sure you have PostgreSQL installed. For a tutorial on installing
+   Postgres, [Django Girls'](http://djangogirls.org) ebook,
+   [Tutorials Extension](http://djangogirls.org/resources/), is a reference.
+   The info is also on [Django Girls GitHub repository](https://github.com/DjangoGirls/tutorial-extensions/blob/master/en/optional_postgresql_installation/README.md).
 1. Clone the repo - `git clone git@github.com:systers/portal.git` and cd into
-  the `portal` directory.
+  the `portal` directory. If working behind a proxy, follow the instructions [here](https://cms-sw.github.io/tutorial-proxy.html).
 1. Create a virtual environment with Python 3 and install dependencies:
 
  ```bash
@@ -31,43 +41,56 @@ Setup for developers
   shell variable every time you activate the virtualenv, edit `venv/bin/activate`
   and add to the bottom the export statement.
 1. Run `python systers_portal/manage.py migrate`.
+1. Run `python systers_portal/manage.py cities_light` for downloading and importing data for django-cities-light.
 1. Run `python systers_portal/manage.py createsuperuser` to create a superuser for the admin panel.
   Fill in the details asked.
 1. Run `python systers_portal/manage.py runserver` to start the development server. When in testing
-  or production, feed the respective settings file from the command line, e.g. for  
-  testing `python manage.py runserver --settings=systers_portal.settings.testing`.
+  or production, feed the respective settings file from the command line, e.g. for
+  testing `python systers_portal/manage.py runserver --settings=systers_portal.settings.testing`.
 1. Before commiting run `flake8 systers_portal` and fix PEP8 warnings.
 1. Run `python systers_portal/manage.py test --settings=systers_portal.settings.testing`
   to run all the tests.
 
 
+If you face some issues while installing and making Portal up in your local, have a look at issues labelled as [While Setting up Portal](https://github.com/systers/portal/labels/While%20Setting%20up%20Portal).
 
-Run Portal with Docker
-----------------------
+Run Portal in a Docker container
+--------------------------------
 
-If you want to take a speak peek at Systers Portal, a Docker container is for
-you. The following Docker is not intended to be run in production at the
-moment (but might be configured to do so in the future).
+If you wish to view a sneak peek of the Systers Portal, you may use Docker to
+preview the Portal.
+Note: The following Docker configuration is not intended to be run in
+production at the moment. It may be configured to do so in the future.
 
-1. Install [Docker](https://docs.docker.com/installation/) on your system.
-  Check the installation steps for your specific OS. Docker runs natively on
-  Linux-based system. For Windows and Mac OS X, you should install VirtualBox
-  and Boot2Docker.
-1. Install [fig](http://www.fig.sh/install.html).
-1. Clone the repo - `git clone git@github.com:systers/portal.git` and cd into
-  the `portal` directory.
-1. Run `fig build`. This command will pull the images required to run the project
-  and will install the dependencies.
-1. Run `docker run -e SECRET_KEY=foobarbaz portal_web` in your terminal.
-1. Run `fig run web python systers_portal/manage.py migrate`.
-1. Run `fig run web python systers_portal/manage.py createsuperuser` if you
-  want to create a superuser to access the admin panel.
-1. Run `fig up` to run the project.
-1. Now Systers Portal should be running on port 8000. If you are on Linux, it
-  is `http://0.0.0.0:8000`. If you are using Boot2Docker, then it might be
-  `http://192.168.59.103:8000/`. If the following IP address doesn't work for
-  you, run `boot2docker ip` and replace the previous ip with the Boot2Docker
-  outputted IP address.
+1. Install [Docker](https://docs.docker.com/installation/).
+   Follow the installation steps for your specific operating system:
+     * Docker runs natively on a Linux-based system.
+     * For Windows and Mac OS X, you should follow instructions for installing
+       boot2docker which also installs VirtualBox.
+1. Install [docker-compose](http://docs.docker.com/compose/install/).
+   Note: fig has been deprecated. Docker-compose replaces fig.
+1. Create a new directory on your local system.
+1. Enter `git clone git@github.com:systers/portal.git` to clone the Systers
+   Portal repository. After the clone is done, change directory (cd) to the
+   `portal` directory.
+1. Run `docker-compose build`. This pulls the Docker images required to run the
+   project and installs the necessary dependencies.
+1. **This step will require the Django SECRET_KEY.**
+   Run `docker run -e SECRET_KEY=foobarbaz portal_web`.
+1. Run `docker-compose run web python systers_portal/manage.py migrate`.
+1. Run `docker-compose run web python systers_portal/manage.py cities_light` for downloading and importing data for django-cities-light.
+1. *Optional:*
+   Run `docker-compose run web python systers_portal/manage.py createsuperuser`
+   if you wish to create a superuser to access the admin panel.
+1. Run `docker-compose up` to start the webserver for the Django Systers Portal
+   project.
+1. Systers Portal should be running on port 8000.
+     * If you are on Linux, enter `http://0.0.0.0:8000` in your browser.
+     * If you are using boot2docker on Windows or Mac OS X, enter
+       `http://192.168.59.103:8000/` in your browser. If this IP address
+       doesn't work, run `boot2docker ip` from the command line and replace
+       the previous IP address in the HTTP request with the IP returned by
+       boot2docker.
 
 
 Documentation
@@ -82,7 +105,7 @@ $ cd docs/
 $ make html
 ```
 
-To view the documentation open the generated `index.html` file in browser - 
+To view the documentation open the generated `index.html` file in browser -
 `docs/_build/html/index.html`.
 
 For more information on semantics and builds, please refer to the Sphinx

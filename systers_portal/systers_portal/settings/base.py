@@ -41,12 +41,14 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
     'ckeditor',
-    'django_wysiwyg',
     'guardian',
     'crispy_forms',
+    'cities_light',
+    'imagekit',
     'blog',
     'common',
     'community',
+    'meetup',
     'membership',
     'users',
 )
@@ -125,9 +127,7 @@ MEDIA_URL = "/media/"
 # https://django-allauth.readthedocs.org/en/latest/#configuration
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_ADAPTER = 'users.adapter.SystersUserAccountAdapter'
-
-# WYSIWYG configuration
-DJANGO_WYSIWYG_FLAVOR = "ckeditor"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 # Ckeditor configuration
 CKEDITOR_UPLOAD_PATH = "uploads/"
@@ -137,6 +137,7 @@ CKEDITOR_RESTRICT_BY_USER = True
 
 CKEDITOR_CONFIGS = {
     'default': {
+        'width': '100%',
         'toolbar': [
             ['Styles', 'Format', 'Font', 'FontSize', 'Bold', 'Italic',
              'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'Undo',
